@@ -25,8 +25,8 @@ export default function Login() {
   }, [searchParams, login, token]);
 
   const handleGoogleLogin = () => {
-    const apiHost = `${window.location.hostname}:8000`;
-    window.location.href = `http://${apiHost}/auth/google`;
+    const apiBase = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`;
+    window.location.href = `${apiBase}/auth/google`;
   };
 
   return (

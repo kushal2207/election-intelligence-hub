@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <div className="min-h-screen relative flex flex-col">
         <Routes>
           <Route path="/login" element={<Login />} />

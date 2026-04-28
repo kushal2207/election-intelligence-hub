@@ -257,7 +257,7 @@ export default function ElectionHub() {
     setIsLoading(true);
 
     try {
-      const apiBase = `http://${window.location.hostname}:8000`;
+      const apiBase = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`;
       const authToken = localStorage.getItem('token');
       const { data } = await axios.post(`${apiBase}/api/v1/query`, {
         query_text: text,
