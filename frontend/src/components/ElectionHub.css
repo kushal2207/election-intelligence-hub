@@ -1,0 +1,402 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap');
+
+/* ─────────────────────────────────────────────
+   COLOR SYSTEM
+   ───────────────────────────────────────────── */
+:root {
+  --eh-bg: #0d0d14;
+  --eh-surface: rgba(255, 255, 255, 0.03);
+  --eh-surface-hover: rgba(255, 255, 255, 0.06);
+  --eh-border: rgba(255, 255, 255, 0.07);
+  --eh-border-hover: rgba(255, 255, 255, 0.14);
+
+  --eh-mint: #a8ffcf;
+  --eh-peach: #ffb5a0;
+  --eh-lavender: #c8b8ff;
+  --eh-sky: #a0d4ff;
+  --eh-butter: #ffe8a0;
+  --eh-rose: #ffb5c8;
+
+  --eh-text: #f0ede8;
+  --eh-text2: #7a7870;
+  --eh-text3: #3d3c3a;
+}
+
+
+/* ─────────────────────────────────────────────
+   TWO-PANEL LAYOUT
+   ───────────────────────────────────────────── */
+.eh-layout {
+  display: flex;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  gap: 0;
+  position: relative;
+}
+
+/* Sidebar wrapper */
+.eh-sidebar-wrapper {
+  flex-shrink: 0;
+  width: 320px;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+  overflow: hidden;
+}
+
+.eh-sidebar-wrapper.closed {
+  width: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Sidebar toggle button */
+.eh-sidebar-toggle {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 20;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--eh-surface);
+  border: 1px solid var(--eh-border);
+  color: var(--eh-mint);
+  display: none; /* shown on mobile via media query */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.eh-sidebar-toggle:hover {
+  background: var(--eh-surface-hover);
+  border-color: var(--eh-mint);
+  box-shadow: 0 0 12px rgba(168, 255, 207, 0.15);
+}
+
+/* Chat panel */
+.eh-chat-panel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: rgba(13, 13, 20, 0.4);
+  border-left: 1px solid var(--eh-border);
+  border-radius: 0 16px 16px 0;
+}
+
+
+/* ─────────────────────────────────────────────
+   SIDEBAR INTERNALS
+   ───────────────────────────────────────────── */
+.eh-sidebar {
+  width: 320px;
+  height: 100%;
+  overflow-y: auto;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  color: var(--eh-text);
+  background: var(--eh-bg);
+  border-radius: 16px 0 0 16px;
+  border: 1px solid var(--eh-border);
+  border-right: none;
+}
+
+/* Scrollbar */
+.eh-sidebar::-webkit-scrollbar { width: 4px; }
+.eh-sidebar::-webkit-scrollbar-track { background: transparent; }
+.eh-sidebar::-webkit-scrollbar-thumb { background: var(--eh-border); border-radius: 10px; }
+.eh-sidebar::-webkit-scrollbar-thumb:hover { background: var(--eh-border-hover); }
+
+/* Header */
+.eh-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--eh-border);
+  position: sticky;
+  top: 0;
+  background: var(--eh-bg);
+  z-index: 5;
+}
+
+.eh-sidebar-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Quick Stats Row */
+.eh-quick-stats {
+  display: flex;
+  gap: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--eh-border);
+}
+
+.eh-qs-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 12px;
+  border-right: 1px solid var(--eh-border);
+}
+
+.eh-qs-item:last-child { border-right: none; }
+
+.eh-qs-icon { flex-shrink: 0; }
+
+.eh-qs-value {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--eh-text);
+}
+
+.eh-qs-label {
+  font-size: 9px;
+  color: var(--eh-text2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Sections */
+.eh-section {
+  padding: 16px 16px 8px;
+}
+
+.eh-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--eh-peach);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.eh-section-title.eh-section-muted {
+  color: var(--eh-text3);
+}
+
+/* Pulse ring for "Live Now" */
+.eh-pulse-ring {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--eh-peach);
+  box-shadow: 0 0 10px var(--eh-peach);
+  animation: eh-pulse 2s infinite;
+  flex-shrink: 0;
+}
+
+
+/* ─────────────────────────────────────────────
+   ELECTION CARDS (sidebar)
+   ───────────────────────────────────────────── */
+.eh-election-card {
+  background: var(--eh-surface);
+  border: 1px solid var(--eh-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+  position: relative;
+}
+
+.eh-election-card:hover {
+  background: var(--eh-surface-hover);
+  border-color: var(--eh-border-hover);
+}
+
+/* Clickable cards — interactive styling */
+.eh-election-card.eh-clickable {
+  cursor: pointer;
+}
+
+.eh-election-card.eh-clickable:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(168, 255, 207, 0.08);
+}
+
+.eh-election-card.eh-clickable:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Live cards get peach glow on hover */
+.eh-election-card.eh-election-live.eh-clickable:hover {
+  box-shadow: 0 4px 20px rgba(255, 181, 160, 0.12);
+  border-color: rgba(255, 181, 160, 0.3);
+}
+
+/* "Click to ask AI" hint */
+.eh-ec-ask-hint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--eh-mint);
+  margin-top: 8px;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.25s ease;
+  letter-spacing: 0.02em;
+}
+
+.eh-election-card.eh-clickable:hover .eh-ec-ask-hint {
+  opacity: 0.8;
+  transform: translateX(0);
+}
+
+.eh-election-live {
+  border-left: 2px solid var(--eh-peach);
+  background: rgba(255, 181, 160, 0.03);
+}
+
+.eh-election-live:hover {
+  background: rgba(255, 181, 160, 0.06);
+}
+
+/* Live cards hint in peach */
+.eh-election-live .eh-ec-ask-hint {
+  color: var(--eh-peach);
+}
+
+.eh-election-concluded {
+  opacity: 0.55;
+}
+
+.eh-election-concluded:hover {
+  opacity: 0.75;
+}
+
+/* Concluded cards hint in lavender */
+.eh-election-concluded .eh-ec-ask-hint {
+  color: var(--eh-lavender);
+}
+
+.eh-ec-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.eh-ec-state {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--eh-text);
+}
+
+.eh-ec-meta {
+  font-size: 11px;
+  color: var(--eh-text2);
+  margin-bottom: 4px;
+}
+
+.eh-ec-detail {
+  font-size: 11px;
+  color: var(--eh-sky);
+}
+
+.eh-ec-result {
+  font-size: 11px;
+  color: var(--eh-mint);
+  margin-top: 4px;
+}
+
+.eh-ec-turnout {
+  font-size: 10px;
+  color: var(--eh-text2);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.eh-ec-countdown {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--eh-lavender);
+  margin-top: 4px;
+}
+
+
+/* ─────────────────────────────────────────────
+   BADGES
+   ───────────────────────────────────────────── */
+.eh-badge {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: inline-block;
+  letter-spacing: 0.03em;
+}
+
+.eh-badge-done { background: rgba(168, 255, 207, 0.1); color: var(--eh-mint); }
+.eh-badge-live { background: rgba(255, 181, 160, 0.12); color: var(--eh-peach); }
+.eh-badge-next { background: rgba(200, 184, 255, 0.1); color: var(--eh-lavender); }
+.eh-badge-future { background: var(--eh-surface); color: var(--eh-text3); border: 1px solid var(--eh-border); }
+
+
+/* ─────────────────────────────────────────────
+   LIVE DOT ANIMATION
+   ───────────────────────────────────────────── */
+.eh-live-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--eh-mint);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--eh-mint);
+  animation: eh-pulse 2s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes eh-pulse {
+  0% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0.4; transform: scale(0.9); }
+}
+
+
+/* ─────────────────────────────────────────────
+   RESPONSIVE
+   ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .eh-sidebar-toggle {
+    display: flex;
+  }
+
+  .eh-sidebar-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 15;
+    width: 300px;
+  }
+
+  .eh-sidebar-wrapper.closed {
+    width: 0;
+  }
+
+  .eh-sidebar {
+    width: 300px;
+    border-radius: 16px;
+    border: 1px solid var(--eh-border);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .eh-chat-panel {
+    border-left: none;
+    border-radius: 16px;
+  }
+}

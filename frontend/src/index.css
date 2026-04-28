@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Surface & Background ── */
+  --color-bgDeep: #0d0d14;
+  --color-bgMain: #0d0d14;
+  --color-bgCard: rgba(255, 255, 255, 0.03);
+  --color-bgCardSolid: #16161f;
+  --color-bgElevated: rgba(255, 255, 255, 0.05);
+
+  /* ── Borders ── */
+  --color-borderSoft: rgba(255, 255, 255, 0.07);
+  --color-borderMed: rgba(255, 255, 255, 0.12);
+
+  /* ── Text ── */
+  --color-textMain: #f0ede8;
+  --color-textSecondary: #7a7870;
+  --color-textMuted: #3d3c3a;
+
+  /* ── Accent: Neon Pastel Palette ── */
+  --color-accent: #a8ffcf;      /* Mint */
+  --color-accentDark: #80e0af;
+  --color-accentCyan: #a0d4ff;  /* Sky */
+  --color-accentPeach: #ffb5a0; /* Peach */
+  --color-accentLavender: #c8b8ff; /* Lavender */
+
+  /* ── Semantic ── */
+  --color-success: #a8ffcf;
+  --color-successBg: rgba(168, 255, 207, 0.1);
+  --color-warning: #ffe8a0;
+  --color-warningBg: rgba(255, 232, 160, 0.1);
+  --color-danger: #ffb5c8;
+  --color-dangerBg: rgba(255, 181, 200, 0.1);
+  --color-info: #c8b8ff;
+  --color-infoBg: rgba(200, 184, 255, 0.1);
+
+  /* ── Fonts ── */
+  --font-heading: "Inter", "Plus Jakarta Sans", sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  /* ── Shadows ── */
+  --shadow-glow: 0 0 20px rgba(168, 255, 207, 0.12);
+  --shadow-peach-glow: 0 0 20px rgba(255, 181, 160, 0.12);
+  --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+
+  body {
+    @apply bg-bgDeep text-textMain font-sans antialiased overflow-x-hidden;
+    /* Subtle blurry background blobs in Neon Pastel */
+    background-image: 
+      radial-gradient(circle at 15% 50%, rgba(168, 255, 207, 0.05), transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(200, 184, 255, 0.05), transparent 25%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    @apply bg-accent/20 text-white;
+  }
+}
+
+@layer components {
+  /* ── Glass Card ── */
+  .glass-card {
+    @apply bg-[#0A0A0A]/80 backdrop-blur-2xl border border-borderSoft rounded-[32px] shadow-card;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .glass-card:hover {
+    @apply border-borderMed;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 20px rgba(168, 255, 207, 0.05);
+  }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    @apply px-8 py-3.5 font-heading font-bold text-sm rounded-full
+           bg-accent text-black
+           shadow-glow border border-accent
+           transition-all duration-300;
+  }
+  .btn-primary:hover {
+    @apply shadow-[0_0_20px_rgba(168,255,207,0.3)] scale-105 bg-white text-black border-white;
+  }
+  .btn-primary:active {
+    @apply scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 font-heading font-semibold text-sm rounded-full
+           bg-bgElevated text-textMain border border-borderSoft
+           transition-all duration-300;
+  }
+  .btn-secondary:hover {
+    @apply bg-[#1A1A1A] border-borderMed text-accent;
+  }
+
+  .btn-ghost {
+    @apply px-4 py-2 font-heading font-medium text-sm rounded-full
+           text-textSecondary transition-all duration-200;
+  }
+  .btn-ghost:hover {
+    @apply text-white bg-white/5;
+  }
+
+  /* ── Inputs ── */
+  .input-field {
+    @apply w-full px-5 py-4 bg-[#0A0A0A] border border-borderSoft rounded-2xl
+           text-textMain placeholder:text-textMuted text-sm
+           transition-all duration-300;
+  }
+  .input-field:focus {
+    @apply outline-none border-accent/50 ring-1 ring-accent/30;
+  }
+
+  .select-field {
+    @apply px-4 py-3 bg-[#0A0A0A] border border-borderSoft rounded-2xl
+           text-textMain text-sm appearance-none cursor-pointer
+           transition-all duration-300;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23737373' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+  .select-field:focus {
+    @apply outline-none border-accent/50 ring-1 ring-accent/30;
+  }
+
+  /* ── Badge ── */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full border border-borderSoft bg-[#111111] text-textSecondary;
+  }
+  .badge-success {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-successBg text-success border border-success/20;
+  }
+  .badge-warning {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-warningBg text-warning border border-warning/20;
+  }
+  .badge-danger {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-dangerBg text-danger border border-danger/20;
+  }
+  .badge-info {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-infoBg text-info border border-info/20;
+  }
+
+  /* ── Typography Gradients ── */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent via-accentCyan to-accentLavender;
+  }
+
+  /* ── Fade-in animation ── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* ── Slide-up animation ── */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-slideUp {
+    animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* ── Pulse dot ── */
+  @keyframes pulseDot {
+    0%, 100% { opacity: 0.3; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+  .animate-pulseDot {
+    animation: pulseDot 2s ease-in-out infinite;
+  }
+}

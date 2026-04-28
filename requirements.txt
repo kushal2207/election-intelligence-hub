@@ -1,0 +1,11 @@
+neo4j-driver
+weaviate-client
+sentence-transformers
+fastapi
+uvicorn[standard]
+groq
+python-dotenv
+authlib
+httpx
+itsdangerous
+python-jose[cryptography]
